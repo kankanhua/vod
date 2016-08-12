@@ -24,7 +24,8 @@
 */
 
 	var sourceCSS = [
-		["loader","../../static/oss/loader.css"]
+		["loader","../../static/oss/loader.css"],
+		["font-awesome","../../static/shared/css/font-awesome.min.css"],
 	];
 	var sourceJS=[
 		["jquery","../../static/ApdBase/js/jquery.min.js"],
