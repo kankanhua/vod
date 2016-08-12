@@ -1,0 +1,136 @@
+
+<!doctype html public "-//w3c//dtd xhtml 1.0 transitional//en" "http://www.w3.org/tr/xhtml1/dtd/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <META http-equiv="X-UA-Compatible" content="IE=9" > </META>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>TARS</title>
+    <script type="text/javascript" data-src="../../static/oss/index.js"></script>
+    <script type="text/jsvascript" data-src="../../static/oss/moment.js"></script>
+    <script src="../../static/oss/loader.js"></script>
+</head>
+<body style="cursor: default;">
+<div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="#"><small><i class="icon-desktop"></i>&nbsp;&nbsp;TARS</small> </a>
+            <ul class="nav ace-nav pull-right">
+               <li class="light-blue"><span style="font-size:16px"><span><i class="icon-user"></i></span></span></li>
+               <li class="green">
+		            <a href="#"> <i class="icon-share-alt"></i> <span> 返回主页 </span></a>
+                </li>
+                <li class="grey">
+                    <a href="http://passport.oa.com/modules/passport/signout.ashx?url=http://tvm.oa.com"> <i class="icon-off"></i><span> 注销 </span> </a>
+                </li>
+	        </ul>
+        </div>
+    </div>
+</div>
+<div class="container-fluid" id="main-container">
+    <a href="#" id="menu-toggler"><span></span></a>
+    <div id="sidebar">
+        <div class="menuaccordion">
+            <ul class="nav nav-list">
+    <li class="leaf" id='_overview' url='overview' type="json">
+        <a href=""><i class="icon-dashboard"></i><span> 运营总览(建设中)</span></a>
+    </li>
+
+    <li class="branch">
+        <a href="#" class="dropdown-toggle apdbase-head-title" id="id_ftp">
+            <i class="icon-cloud"></i>
+            <span>影视平台</span>
+            <b class="arrow icon-angle-down"></b>
+        </a>
+        <ul class="submenu">
+            <li class="leaf" type="json" id='id_ftp_overview' url='a.html'>
+                <a href="">
+                    <i class="icon-double-angle-right"></i>
+                    <span>带宽容量(建设中)</span>
+                </a>
+            </li>
+
+            <li class="leaf" type="json" id='machine_volume_front' url='machine_volume_front.cgi'>
+                <a href="">
+                    <i class="icon-double-angle-right"></i>
+                    <span>设备容量</span>
+                </a>
+            </li>
+       	    <li class="leaf" type="json" id='platform_info_front' url='platform_info_front.cgi'>
+                <a href="">
+                    <i class="icon-double-angle-right"></i>
+                    <span>业务平台视图</span>
+                </a>
+            </li>
+            <li class="leaf" type="json" id='resource_info_front' url='resource_info_front.cgi'>
+                <a href="">
+                    <i class="icon-double-angle-right"></i>
+                    <span>资源池视图</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+
+    <li class='branch'>
+        <a href="#" class="dropdown-toggle apdbase-head-title"  id="configure_menu">
+             <i class="icon-cogs"></i>
+            <span>内部运维</span>
+            <b class="arrow icon-angle-down"></b>
+        </a>
+
+        <ul class="submenu">
+            <li class="leaf" type="json"  id='gather_agent_manager' url='gather_agent_manager_front.cgi'><a href=""><i class="icon-double-angle-right"></i><span>采集客户端管理</span></a></li>
+            <li class='branch'>
+                <a href="#" class="dropdown-toggle apdbase-head-title"  id="tools_menu">
+                     <i class="icon-hdd"></i>
+                    <span>DB管理</span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+                <ul class="submenu">
+                    <li><a href="http://10.152.24.18/phpmyadmin/index.php" target="_blank"><span>上海-TARS DB主</span></a></li>
+                    <li><a href="http://10.180.31.41/phpmyadmin/index.php" target="_blank"><span>上海-TARS DB备</span></a></li>
+                    <li><a href="http://10.152.24.45/phpmyadmin/index.php" target="_blank"><span>上海-OSS DB主</span></a></li>
+                    <li><a href="http://10.152.24.239/phpmyadmin/index.php" target="_blank"><span>上海-OSS DB备</span></a></li>
+                    <li><a href="http://10.173.24.140/phpmyadmin/index.php" target="_blank"><span>天津-TARS DB主</span></a></li>
+                    <li><a href="http://10.234.17.101/phpmyadmin/index.php" target="_blank"><span>天津-TARS DB备</span></a></li>
+                    <li><a href="http://10.244.112.137/phpmyadmin/index.php" target="_blank"><span>天津-OSS DB主</span></a></li>
+                    <li><a href="http://10.168.11.234/phpmyadmin/index.php" target="_blank"><span>天津-OSS DB备</span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+<!--
+    <li class='branch'>
+        <a href="#" class="dropdown-toggle apdbase-head-title"  id="tools_menu_test">
+             <i class="icon-laptop"></i>
+            <span>TEST</span>
+            <b class="arrow icon-angle-down"></b>
+        </a>
+        <ul class="submenu">
+            <li class="leaf" type="json"  id='quota_spline_test' url='quota_spline_test.cgi'><a href=""><i class="icon-double-angle-right"></i><span>Quota_test</span></a></li>
+        </ul>
+    </li>
+-->
+</ul>
+
+        </div>
+        <div id="sidebar-collapse">
+	    <i class="icon-double-angle-left"></i>
+        </div>
+
+    </div>
+    <div id="main-content" class="clearfix">
+        <div id="breadcrumbs">
+            <ul class="breadcrumb" id="apdbase-breadcrumb-index" style="margin-left:12px;">
+	        <li><i class="icon-home"></i><a href="#">Home</a></li>
+            </ul><!--.breadcrumb-->
+            <ul class="breadcrumb" id="apdbase-breadcrumbs"></ul><!--.breadcrumb-->
+            <div id="apdbase-nav-info" style="font-size:13px"></div>
+        </div><!--#breadcrumbs -->
+
+        <div id="page-content" class="clearfix"></div>
+    </div> <!-- main content-->
+</div> <!-- main container-->
+    <!-- content end -->
+</body>
+</html>
