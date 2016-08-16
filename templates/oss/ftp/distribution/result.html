@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>ftp_distribution_result</title>
+        <meta name="natus">
+		{% load staticfiles %}
+		<link href="{% static 'ApdBase/css/boostrap.min.css' %}">
+		<script  src="{% static 'shared/js/bootstrap-filestyle.min.js' %}"></script>
+		<style>
+			.center {
+				display: table;
+				margin-top : auto;
+				margin-center : auto;
+			}
+		</style>
+
+        {% load staticfiles %}
+        <script type="text/javascript" src="{% static 'oss/ftp/distribution/result.js' %}"></script>
+        <style>
+        </style>
+     </head>
+     <body>
+        <div class = "container-fluid">
+            <div class="row-fluid">
+				<div class="span3 center optional input-prepend input-append label_padding condition_member">
+					<span class="add-on text-info">通过</span>
+					<select class="content input-small" id="query_selector" style="font-size:12px">
+						<option value=1>文件名</option>
+						<option value=2>vid</option>
+						<option value=3>文件</option>
+					<select>
+					<span class="add-on text-info">查询</span>
+				</div>
+				<div class="span5 center optional input-prepend input-append label_padding condition_member query_input " id="query_input_1">
+					<span class="add-on text-info">文件名: </span>
+					<input type="text"></input>
+					<button class="mod-day btn btn-info btn-small" onclick="queryByName()">
+						<i class="icon-search"></i>查询
+					</button>
+				</div>
+				<div class="span5 center optional input-prepend input-append label_padding condition_member query_input" id="query_input_2">
+					<span class="add-on text-info">vid: </span>
+					<input type="text"></input>
+					<button class="mod-day btn btn-info btn-small" onclick="queryByVid()">
+						<i class="icon-search"></i>查询
+					</button>
+				</div>
+				<div class="span5 center optional input-prepend input-append label_padding condition_member query_input" id="query_input_3">
+					<input type="file" class="file" data-buttonName="btn-primary"></input>
+					<!--<button class="mod-day btn btn-info btn-small" onclick="queryByFile()">
+						<i class="icon-search"></i>查询
+					</button>-->
+				</div>
+				<div class="span2 center"></div>
+				<div class="span2 center"></div>
+			</div>
+		</div>
+    </body>
+</html>

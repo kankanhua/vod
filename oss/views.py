@@ -31,6 +31,10 @@ def ftp_distribution (request) :
 	template = loader.get_template ("developing.html");
 	return jsonify(template.render())
 
+def ftp_distribution_result (request) :
+	template = loader.get_template ("oss/ftp/distribution/result.html");
+	return jsonify(template.render())
+
 def ftp_distribution_ocinfo (request) :
     template = loader.get_template ("oss/ftp/distribution/ocinfo.html")
 
