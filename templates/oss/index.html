@@ -14,7 +14,7 @@
 <div class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="brand" href="#"><small><i class="icon-desktop"></i>&nbsp;&nbsp;VOD</small> </a>
+            <a class="brand" href="#"><small><i class="icon-desktop"></i>&nbsp;&nbsp;VOD 视频点播组运维系统</small> </a>
             <ul class="nav ace-nav pull-right">
                <li class="light-blue"><span style="font-size:16px"><span><i class="icon-user"></i></span></span></li>
                <li class="green">
@@ -49,14 +49,33 @@
 								</span>
 							</a>
 						</li>
-						<li class="leaf" type="json" id='id_ftp_distribution' url='ftp_distribution'>
-							<a href="">
+						<li class="branch">
+							<a href="#" class="dropdown-toggle apdbase-head-title" id="id_distribution">
 								<i class="icon-double-angle-right"></i>
 								<span>
 									<i class="fa fa-sitemap fa-fw"></i>
-									分发(建设中)
+									分发
 								</span>
+								<b class="arrow icon-angle-down"></b>
 							</a>
+							<ul class="submenu">
+								<li class="leaf" type="json" id='id_ftp_distribution_ocinfo' url='ftp_distribution_ocinfo'>
+									<a href>
+										<span>
+											<i class="fa fa-info fa-fw"></i>
+											机房信息(仅展示)
+										</span>
+									</a>
+								</li>
+								<li class="leaf" type="json" id='id_ftp_distribution_result' url='ftp_distribution_result'>
+									<a href>
+										<span>
+											<i class="fa fa-search fa-fw"></i>
+											分发结果查询
+										</span>
+									</a>
+								</li>
+							</ul>
 						</li>
 						<li class="leaf" type="json" id='id_ftp_dispatch' url='ftp_dispatch'>
 							<a href="">
