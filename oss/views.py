@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.template import RequestContext, loader
+from django.template import Context, RequestContext, loader
 import json
 from django.db.models import Avg, Count, Min, Max
 import time
@@ -53,6 +53,15 @@ def ftp_distribution_result_get (request) :
 			"end_time" : end_time
 			})), content_type="application/json");
 
+def ftp_distribution_result_getFileId (request) :
+	cf = ConfigParser.RawConfigParser ()
+	cf.read ("oss/mds3.conf")
+	qr = query.QueryResult (cf.get("FileId", "url"))
+	vid = request.GET.get ("vid")
+	return HttpResponse (json.dumps(qr.getRawJson({
+	    "vid" : vid,
+	    "otype" : cf.get("FileId", "otype")
+	})), content_type="application/json")
 
 def ftp_distribution_ocinfo (request) :
     template = loader.get_template ("oss/ftp/distribution/ocinfo.html")
@@ -68,9 +77,9 @@ def ftp_distribution_ocinfo (request) :
     for iGroupId in gIdList:
         options.append(gInfos[iGroupId]["name"])
 
-    return jsonify (template.render ({\
+    return jsonify (template.render (Context({\
         "options" : options, \
-    }))
+    })))
 
 def ftp_distribution_ocinfo_getOCList (request) :
 	if request.is_ajax () and 'GET' == request.method :

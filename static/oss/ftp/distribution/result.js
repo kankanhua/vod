@@ -67,9 +67,50 @@ function queryByName () {
 	}
 	else {
 		$("#query_result_table").dataTable().fnClearTable();
-		addRow(name, start_time, end_time);
+		addRow(name, start_time, end_time, true);
 		$("#query_result_table").dataTable().fnDraw();
 		$("#query_result_div").show();
+	}
+}
+
+function queryByVid () {
+	var vid = $("#query_value_2").val();
+	if (vid.length == 0) {
+		alert("请填写vid");
+		return;
+	}
+	var start_time = $("#startTime").val();
+	if (start_time.length == 0) {
+		alert("请选择查询起始时间");
+		return;
+	}
+	var end_time = $("#endTime").val();
+	if (end_time.length == 0) {
+		alert("请选择查询结束时间");
+		return;
+	}
+	if (end_time < start_time) {
+		alert("结束时间不能小于起始时间.请检查查询时间");
+		return;
+	}
+	else {
+		$.ajax ({
+			url : "ftp_distribution_result_getFileId?vid=" + vid,
+			type : 'GET',
+			dataType : 'json',
+			success : function (data) {
+				var fileList = data.data[0].Results[0].Fields.viddata[0].fileids;
+				$("#query_result_table").dataTable().fnClearTable();
+				$("#query_result_div").show();
+				for (var i = 0; i < fileList.length; ++ i) {	
+					addRow(fileList[i], start_time, end_time, false);
+					$("#query_result_table").dataTable().fnDraw();
+				}
+			},
+			error : function (data) {
+				alert("获取数据失败！请检查网络或者稍后重试！");
+			}
+		});
 	}
 }
 
@@ -102,7 +143,7 @@ function queryByFile () {
 			var result = this.result.split("\r\n");
 			for (var i = 0; i < result.length; ++ i) {
 				if(result[i].length != 0) {
-					addRow(result[i], start_time, end_time);
+					addRow(result[i], start_time, end_time, true);
 					$("#query_result_table").dataTable().fnDraw();
 				}
 			}
@@ -111,7 +152,7 @@ function queryByFile () {
 	}
 }
 
-function addRow (name, start_time, end_time) {
+function addRow (name, start_time, end_time, showFalse) {
 	$.ajax ({
 		url : "ftp_distribution_result_get?file_name=" + name + "&start_time=" + start_time + "&end_time=" + end_time,
 		type : 'GET',
@@ -157,15 +198,18 @@ function addRow (name, start_time, end_time) {
 				}
 			}
 			else {
-				$("#query_result_table").dataTable().fnAddData([
-					"-",
-					"-",
-					"-",
-					"-",
-					"-",
-					"-",
-					"检索失败！分发数据库不能在[" + start_time + "~" + end_time + "]这个时间段内没有文件:" + name + "的分发记录"
-				]);
+				if (showFalse)
+				{
+					$("#query_result_table").dataTable().fnAddData([
+						"-",
+						"-",
+						"-",
+						"-",
+						"-",
+						"-",
+						"检索失败！分发数据库在[" + start_time + "~" + end_time + "]这个时间段内没有文件:" + name + "的分发记录"
+					]);
+				}
 			}		
 		},
 		error : function (data) {

@@ -7,6 +7,7 @@ urlpatterns = [
 	url (r"^ftp_overview$", views.ftp_overview, name="oss_ftp_overview"),
 	url (r"^ftp_distribution$", views.ftp_distribution, name="oss_ftp_distribution"),
 	url (r"^ftp_distribution_result_get$", views.ftp_distribution_result_get, name="oss_ftp_distribution_result_get"),
+	url (r"^ftp_distribution_result_getFileId$", views.ftp_distribution_result_getFileId, name="oss_ftp_distribution_result_getFileId"),
 	url (r"^ftp_distribution_result$", views.ftp_distribution_result, name="oss_ftp_distribution_result"),
 	url (r"^ftp_distribution_ocinfo$", views.ftp_distribution_ocinfo, name="oss_ftp_distribution_ocinfo"),
 	url (r"^ftp_distribution_ocinfo_getOCList$", views.ftp_distribution_ocinfo_getOCList, name="oss_ftp_distribution_ocinfo_getOCList"),
