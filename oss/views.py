@@ -6,6 +6,8 @@ import json
 from django.db.models import Avg, Count, Min, Max
 import time
 from mds_db import mdsDB, geo, unicodeCast
+import time, ConfigParser
+from query import query
 # Create your views here.
 
 #utils
@@ -33,7 +35,24 @@ def ftp_distribution (request) :
 
 def ftp_distribution_result (request) :
 	template = loader.get_template ("oss/ftp/distribution/result.html");
-	return jsonify(template.render())
+	return jsonify(template.render({
+		"date" : time.strftime("%Y%m%d", time.localtime())
+		}))
+
+def ftp_distribution_result_get (request) :
+	if request.is_ajax () and "GET" == request.method:
+		cf = ConfigParser.RawConfigParser ()
+		cf.read("oss/mds3.conf")
+		qr = query.QueryResult (cf.get("QueryResult", "url"))
+		file_name = request.GET.get("file_name")
+		start_time = request.GET.get("start_time")
+		end_time = request.GET.get("end_time")
+		return HttpResponse (json.dumps(qr.getRawJson({
+			"file_name" : file_name,
+			"start_time" : start_time,
+			"end_time" : end_time
+			})), content_type="application/json");
+
 
 def ftp_distribution_ocinfo (request) :
     template = loader.get_template ("oss/ftp/distribution/ocinfo.html")

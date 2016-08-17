@@ -63,6 +63,9 @@ function sortOC (oc1, oc2) {
 }
 
 function updateUL(id, content) {
+	if (content == "none") {
+		return false;
+	}
     $("#" + id).children("ul").children("li").remove();
     group2OCList[content].sort(sortOC);
     group2OCList[content].forEach( function(e) {

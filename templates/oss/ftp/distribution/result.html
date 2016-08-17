@@ -7,9 +7,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>ftp_distribution_result</title>
         <meta name="natus">
-		{% load staticfiles %}
-		<link href="{% static 'ApdBase/css/boostrap.min.css' %}">
-		<script  src="{% static 'shared/js/bootstrap-filestyle.min.js' %}"></script>
 		<style>
 			.center {
 				display: table;
@@ -18,10 +15,7 @@
 			}
 		</style>
 
-        {% load staticfiles %}
-        <script type="text/javascript" src="{% static 'oss/ftp/distribution/result.js' %}"></script>
-        <style>
-        </style>
+		{% load staticfiles %}
      </head>
      <body>
         <div class = "container-fluid">
@@ -35,29 +29,74 @@
 					<select>
 					<span class="add-on text-info">查询</span>
 				</div>
-				<div class="span5 center optional input-prepend input-append label_padding condition_member query_input " id="query_input_1">
+				<div class="span4 center optional input-prepend input-append label_padding condition_member query_input " id="query_input_1">
 					<span class="add-on text-info">文件名: </span>
-					<input type="text"></input>
+					<input id="query_value_1" type="text"></input>
 					<button class="mod-day btn btn-info btn-small" onclick="queryByName()">
 						<i class="icon-search"></i>查询
 					</button>
 				</div>
-				<div class="span5 center optional input-prepend input-append label_padding condition_member query_input" id="query_input_2">
+				<div class="span4 center optional input-prepend input-append label_padding condition_member query_input" id="query_input_2">
 					<span class="add-on text-info">vid: </span>
-					<input type="text"></input>
+					<input id="query_value_2" type="text"></input>
 					<button class="mod-day btn btn-info btn-small" onclick="queryByVid()">
 						<i class="icon-search"></i>查询
 					</button>
 				</div>
-				<div class="span5 center optional input-prepend input-append label_padding condition_member query_input" id="query_input_3">
-					<input type="file" class="file" data-buttonName="btn-primary"></input>
-					<!--<button class="mod-day btn btn-info btn-small" onclick="queryByFile()">
+				<div class="span4 center optional input-prepend input-append label_padding condition_member query_input" id="query_input_3">
+					<input id="query_value_3" type="file"></input>
+					<button class="mod-day btn btn-info btn-small" onclick="queryByFile()">
 						<i class="icon-search"></i>查询
-					</button>-->
+					</button>
 				</div>
-				<div class="span2 center"></div>
-				<div class="span2 center"></div>
+				<div class="span2 text-right">
+					<span style="font-size:15px;">查询时间:</span>
+				</div>
+				<div class="span3">
+					<div class="row">
+						<div class="span5 center">
+							<input id="startTime" name="startTime" class="input-small" type="text" style="margin-bottom:0px;" value={{ date }}>
+						</div>
+						<div class="span2 center">
+							<span style="font-size:15px;" class="text-right">至</span>
+						</div>
+						<div class="span5 center">
+							<input id="endTime" name="startTime" class="input-small" type="text" style="margin-bottom:0px;" value={{ date }}>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+        <div class = "container-fluid" id="query_result_div">
+			<table id="query_result_table" class="table table-responsive table-striped table-bordered table-hover nowrap dataTable no-footer" role="grid">
+				<thead>
+					<tr id="head" role="row">
+						<th style="background-color:rgb(176,196,222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">文件信息</font>
+						</th>
+						<th style="background-color:rgb(176,196,222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">域名</font>
+						</th>
+						<th style="background-color:rgb(176, 196, 222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">一类机房分发情况</font>
+						</th>
+						<th style="background-color:rgb(176, 196, 222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">二类机房分发情况</font>
+						</th>
+						<th style="background-color:rgb(176, 196, 222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">分发失败OC数量</font>
+						</th>
+						<th style="background-color:rgb(176, 196, 222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">分发失败信息</font>
+						</th>
+						<th style="background-color:rgb(176, 196, 222);" class="sorting_disable" rowspan="1" colspan="1">
+							<font color="black">错误信息</font>
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+        <script type="text/javascript" src="{% static 'shared/js/fileinput.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'oss/ftp/distribution/result.js' %}"></script>
     </body>
 </html>
