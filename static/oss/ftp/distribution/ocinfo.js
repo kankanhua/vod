@@ -70,7 +70,7 @@ function updateUL(id, content) {
     group2OCList[content].sort(sortOC);
     group2OCList[content].forEach( function(e) {
         $("#" + id).children("ul").append (
-            "<li id=" + e["id"] + " onclick='showOC(" + content + "," + e["id"] + ")'> <div style='text-shadow:0 -1px 0 rgba(0,0,0,0.25);" + (e["state"] == 1 ? "background-color:#49afcd;background-image:linear-gradient(to buttom,#5bc0de,#2f96b4);background-repeat:repeat-x;" : "background-color:#bd362f;") + "cursor:pointer;color:#fff;border:1px solid #ccc;'> OC名: " + e["name"] + " id: " + e["id"] + " 权重: " + e["weight"] +"</div></li>"
+            "<li id=" + e["id"] + " onclick='showOC(" + content + "," + e["id"] + ")'> <div style='text-shadow:0 -1px 0 rgba(0,0,0,0.25);" + (e["state"] == 1 ? "background-color:#49afcd;background-image:linear-gradient(to buttom,#5bc0de,#2f96b4);background-repeat:repeat-x;" : "background-color:#bd362f;") + "cursor:pointer;color:#fff;border:1px solid #ccc;'> OC id: " + e["id"] + "  " + e["name"] + " 权重: " + e["weight"] +"</div></li>"
         );
     });
 }
@@ -140,7 +140,7 @@ function showOC (groupName, ocid) {
 				$("#OC-form-table").dataTable().fnAddData([
 						data.agent[i].wan,
 						data.agent[i].lan,
-						data.agent[i].state == 1 ? "在线" : "离线"
+						data.agent[i].state == 1 ? "启用" : "禁用"
 					]);
 			}
 			$("#OC-form-table").dataTable().fnDraw();

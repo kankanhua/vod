@@ -39,6 +39,7 @@ function showTimeConsume (id) {
 }
 
 function showFailure (id) {
+	$("#" + id + "_table").dataTable();
 	$("#" + id).dialog({
 		modal : true,
 		width : "500px",
@@ -159,10 +160,21 @@ function addRow (name, start_time, end_time, showFalse) {
 		dataType : 'json',
 		success : function (data) {
 			if (data.data != null) {
-				for (var i = 0; i < data.data.length; ++ i) {
-					var iJson = data.data[i];
-					var errorMsg = "";
-					$.each(iJson.v_failed_oc_list, function (i, val) {
+				var max1stIdx = 0, max2ndIdx = 0, minFailedIdx = 0, iJson = data.data[0];
+				for (var i = 1; i < data.data.length; ++ i) {
+					if (data.data[i].success_rate_1st > data.data[max1stIdx].success_rate_1st) {
+						max1stIdx = i;
+					}
+					if (data.data[i].success_rate_2nd > data.data[max2ndIdx].success_rate_2nd) {
+						max2ndIdx = i;
+					}
+					if (data.data[i].v_failed_oc_list.length < data.data[minFailedIdx].v_failed_oc_list.length) {
+						minFailedIdx = i;
+					}
+				}
+					
+				var errorMsg = "", errorMsgMin = "";
+				$.each(iJson.v_failed_oc_list, function (i, val) {
 					errorMsg += "<tr><td>" + val.oc_id + "</td><td>" + val.oc_ip + "</td><td>";
 					if (val.errcode == 0 && val.oc_ip == "0.0.0.0") {
 						errorMsg += "任务超时";
@@ -185,20 +197,45 @@ function addRow (name, start_time, end_time, showFalse) {
 						errorMsg += "DataAgent模块出错";
 					}
 					errorMsg += "(错误码:" + val.errcode + ")</td><td>" + val.area + "</td></tr>"
+				});
+				if(minFailedIdx != 0) {
+					$.each(data.data[minFailedIdx].v_failed_oc_list, function (i, val) {
+						errorMsgMin += "<tr><td>" + val.oc_id + "</td><td>" + val.oc_ip + "</td><td>";
+						if (val.errcode == 0 && val.oc_ip == "0.0.0.0") {
+							errorMsgMin += "任务超时";
+						}
+						else {
+							if (val.errcode == 0) {
+								errorMsgMin += "未分类错误";
+							}
+						}_
+						if (val.errcode > -111000 && val.errcode <= -110500) {
+							errorMsgMin += "TaskMaster模块出错";
+						}
+						if (val.errcode > -112000 && val.errcode <= -111500) {
+							errorMsgMin += "TaskGenerator模块出错";
+						}
+						if (val.errcode > -113000 && val.errcode <= -112500) {
+							errorMsgMin += "TaskCache模块出错";
+						}
+						if (val.errcode > -114000 && val.errcode <= -113500) {
+							errorMsgMin += "DataAgent模块出错";
+						}
+						errorMsgMin += "(错误码:" + val.errcode + ")</td><td>" + val.area + "</td></tr>"
 					});
-					$("#query_result_table").dataTable().fnAddData([
-						"<a href='javascript:void(0)' onclick='showFileMsg(\"" + "fileDialog_" + i + "\")'>文件名: "+ iJson.file_name + "</a><div title='" + iJson.file_name + "的文件信息' style='display:none' id=\"" + "fileDialog_" + i + "\"><p>文件大小: " + iJson.file_size + "</p><p>文件哈希值: " + iJson.hash_value + "</p><p>任务id: " + iJson.task_id + "</p></div>",
-						iJson.domain,
-						"<p>成功率: <font color=" + (iJson.success_rate_1st < 90 ? "'red'" : "'green'") + ">" + iJson.success_rate_1st  + "%</font></p><a href='javascript:void(0)' onclick='showTimeConsume(\"" + "timeDialog_1_" + i + "\")' style='text-decoration:underline'>耗时: " + getTimeConsume(iJson.create_time, iJson.success_time_1st) + "s</a><div id=\"" + "timeDialog_1_" + i + "\" title='" + iJson.file_name + "第一次分发时间记录' style='display:none'><p>创建时间: " + iJson.create_time + "</p><p>起始时间: " +  iJson.start_time + "</p><p>结束时间: " + iJson.success_time_1st + "</p></div>",
-						"<p>成功率: <font color=" + (iJson.success_rate_2nd < 90 ? "'red'" : "'green'") + ">" + iJson.success_rate_2nd  + "%</font></p><a href='javascript:void(0)' onclick='showTimeConsume(\"" + "timeDialog_2_" + i + "\")' style='text-decoration:underline'>耗时: " + getTimeConsume(iJson.create_time, iJson.success_time_2nd) + "s</a><div id=\"" + "timeDialog_2_" + i + "\" title='" + iJson.file_name + "第二次分发时间记录' style='display:none'><p>创建时间: " + iJson.create_time + "</p><p>起始时间: " +  iJson.start_time + "</p><p>结束时间: " + iJson.success_time_2nd + "</p></div>",
-						iJson.v_failed_oc_list.length, 
-						"<a href='javascript:void(0)' onclick='showFailure(\"" + "failDialog_" + i + "\")' style='text-decoration:underline'>详情</a><div id=\"" + "failDialog_" + i + "\" style='display:none;' title='" + iJson.file_name + "分发失败的机房信息'><table id=\"" + "failDialog_"+ i + "_table\" class='table table-bordered no-footer'><thead><tr id='table-head' role='row'><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>OC id</font></th><th style='background-color:rgb(176,196,222);'class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>ip</font></th><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>出错原因</font></th><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>OC名称</font></th></tr></thead><tbody>" + errorMsg + "</tbody></table></div>",
-						"-",
-					]);
 				}
-			}
+				$("#query_result_table").dataTable().fnAddData([
+						"<a href='javascript:void(0)' onclick='showFileMsg(\"" + "fileDialog_" + iJson.task_id + "\")'>"+ iJson.file_name + "</a><div title='" + iJson.file_name + "的文件信息' style='display:none' id=\"" + "fileDialog_" + iJson.task_id + "\"><p>文件大小: " + iJson.file_size + "</p><p>文件哈希值: " + iJson.hash_value + "</p><p>任务id: " + iJson.task_id + "</p></div>",
+						iJson.domain,
+						"<p>成功率: <font color=" + (data.data[max1stIdx].success_rate_1st < 90 ? "'red'" : "'green'") + ">" + iJson.success_rate_1st + "%" + (max1stIdx != 0 ? ("(最高为" + data.data[max1stIdx].success_rate_1st + "%)") : "") + "</font></p><a href='javascript:void(0)' onclick='showTimeConsume(\"" + "timeDialog_1_" + iJson.task_id + "\")' style='text-decoration:underline'>耗时: " + getTimeConsume(iJson.create_time, iJson.success_time_1st) + "s</a><div id=\"" + "timeDialog_1_" + iJson.task_id + "\" title='" + iJson.file_name + "一类机房分发时间记录' style='display:none'><p>创建时间: " + iJson.create_time + "</p><p>起始时间: " +  iJson.start_time + "</p><p>结束时间: " + iJson.success_time_1st + (max1stIdx != 0 ? ("</p><p>分发成功率最高时分发耗时为: " + getTimeConsume(data.data[max1stIdx].create_time, data.data[max1stIdx].success_time_1st) + "s") : "") + "</p></div>",
+						"<p>成功率: <font color=" + (data.data[max2ndIdx].success_rate_2nd < 90 ? "'red'" : "'green'") + ">" + iJson.success_rate_2nd+ "%" +  (max2ndIdx != 0 ? ("(最高为" + data.data[max2ndIdx].success_rate_2nd + "%)") : "") + "</font></p><a href='javascript:void(0)' onclick='showTimeConsume(\"" + "timeDialog_2_" + iJson.task_id + "\")' style='text-decoration:underline'>耗时: " + getTimeConsume(iJson.create_time, iJson.success_time_2nd) + "s</a><div id=\"" + "timeDialog_2_" + iJson.task_id + "\" title='" + iJson.file_name + "二类机房分发时间记录' style='display:none'><p>创建时间: " + iJson.create_time + "</p><p>起始时间: " +  iJson.start_time + "</p><p>结束时间: " + iJson.success_time_2nd + (max2ndIdx != 0 ? ("</p><p>分发成功率最高时分发耗时为: " + getTimeConsume(data.data[max2ndIdx].create_time, data.data[max2ndIdx].success_time_2nd) + "s") : "") + "</p></div>",
+						iJson.v_failed_oc_list.length + (minFailedIdx != 0 ? ("(最少分发失败OC数为: " + data.data[minFailedIdx].v_failed_oc_list.length + ")") : ""), 
+						"<a href='javascript:void(0)' onclick='showFailure(\"" + "failDialog_" + iJson.task_id + "_1\")' style='text-decoration:underline'>详情</a><div id=\"" + "failDialog_" + iJson.task_id + "_1\" style='display:none;' title='" + iJson.file_name + "(任务id: " + iJson.task_id + ")分发失败的机房信息'><table id=\"" + "failDialog_"+ iJson.task_id + "_1_table\" class='table table-bordered no-footer'><thead><tr id='table-head' role='row'><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>OC id</font></th><th style='background-color:rgb(176,196,222);'class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>ip</font></th><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>出错原因</font></th><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>OC名称</font></th></tr></thead><tbody>" + errorMsg + "</tbody></table></div>" + (minFailedIdx != 0 ? "(<a href='javascript:void(0)' onclick='showFailure(\"" + "failDialog_" + data.data[minFailedIdx].task_id + "_2\")' style='text-decoration:underline'>最少分发失败数量的详情</a><div id=\"" + "failDialog_" + data.data[minFailedIdx].task_id + "_2\" style='display:none;' title='" + data.data[minFailedIdx].file_name + "(任务id: " +  data.data[minFailedIdx].task_id + ")分发失败的机房信息'><table id=\"" + "failDialog_"+ data.data[minFailedIdx].task_id + "_2_table\" class='table table-bordered no-footer'><thead><tr id='table-head' role='row'><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>OC id</font></th><th style='background-color:rgb(176,196,222);'class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>ip</font></th><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>出错原因</font></th><th style='background-color:rgb(176,196,222);' class='sorting_disabled' rowspan='1' colspan='1'><font color='black'>OC名称</font></th></tr></thead><tbody>" + errorMsgMin + "</tbody></table></div>)" : ""),
+						"-",
+				]);
+			}	
 			else {
-				if (showFalse)
+				if (data.errno == 0 && showFalse)
 				{
 					$("#query_result_table").dataTable().fnAddData([
 						"-",
